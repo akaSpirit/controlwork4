@@ -1,34 +1,82 @@
 [
   {
-    "name": "Daisy",
-    "age": 1,
-    "satietyLevel": 45,
-    "moodLevel": 45,
-    "healthLevel": 18,
-    "average": 36
+    "name": "Seth",
+    "age": 14,
+    "satietyLevel": 79,
+    "moodLevel": 66,
+    "healthLevel": 60,
+    "average": 68
   },
   {
-    "name": "Jasper",
-    "age": 18,
-    "satietyLevel": 29,
-    "moodLevel": 59,
-    "healthLevel": 26,
-    "average": 38
+    "name": "Toby",
+    "age": 12,
+    "satietyLevel": 55,
+    "moodLevel": 43,
+    "healthLevel": 37,
+    "average": 45
+  },
+  {
+    "name": "Tabby",
+    "age": 7,
+    "satietyLevel": 62,
+    "moodLevel": 66,
+    "healthLevel": 75,
+    "average": 67
+  },
+  {
+    "name": "Tibbles",
+    "age": 13,
+    "satietyLevel": 80,
+    "moodLevel": 56,
+    "healthLevel": 32,
+    "average": 56
+  },
+  {
+    "name": "Misty",
+    "age": 2,
+    "satietyLevel": 58,
+    "moodLevel": 37,
+    "healthLevel": 32,
+    "average": 42
   },
   {
     "name": "Ginger",
-    "age": 10,
-    "satietyLevel": 7,
-    "moodLevel": 66,
-    "healthLevel": 22,
-    "average": 31
+    "age": 17,
+    "satietyLevel": 36,
+    "moodLevel": 42,
+    "healthLevel": 40,
+    "average": 39
+  },
+  {
+    "name": "Poppy",
+    "age": 17,
+    "satietyLevel": 48,
+    "moodLevel": 21,
+    "healthLevel": 43,
+    "average": 37
   },
   {
     "name": "Peach",
+    "age": 11,
+    "satietyLevel": 34,
+    "moodLevel": 52,
+    "healthLevel": 78,
+    "average": 54
+  },
+  {
+    "name": "Millie",
     "age": 5,
-    "satietyLevel": 73,
-    "moodLevel": 53,
-    "healthLevel": 18,
+    "satietyLevel": 42,
+    "moodLevel": 36,
+    "healthLevel": 21,
+    "average": 33
+  },
+  {
+    "name": "Jasper",
+    "age": 14,
+    "satietyLevel": 38,
+    "moodLevel": 67,
+    "healthLevel": 40,
     "average": 48
   }
 ]

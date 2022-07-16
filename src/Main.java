@@ -15,8 +15,9 @@ public class Main {
     }
 
     public static void run() {
-        var cats = Cat.makeCats(10);  // create cats without json
-//        var cats = fs.readFile();
+
+//        var cats = Cat.makeCats(10);  // create cats without json
+        var cats = fs.readFile();  // create cats from json
         printCats(sortCatsByAverageLevel(cats));
         getAction(cats);
     }
