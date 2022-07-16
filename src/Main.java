@@ -1,12 +1,11 @@
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import static java.util.stream.Collectors.*;
+
 import static java.util.Comparator.*;
 
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.reverseOrder;
-import static java.util.stream.Collectors.toList;
 
 public class Main {
     static FileService fs = new FileService("./cats.json");
@@ -16,8 +15,8 @@ public class Main {
     }
 
     public static void run() {
-//        var cats = Cat.makeCats(10);  // create cats without json
-        var cats = fs.readFile();
+        var cats = Cat.makeCats(10);  // create cats without json
+//        var cats = fs.readFile();
         printCats(sortCatsByAverageLevel(cats));
         getAction(cats);
     }
@@ -45,16 +44,19 @@ public class Main {
                 .sorted(comparingInt(Cat::getAge))
                 .toList();
     }
+
     public static List<Cat> sortCatsByHealthLevel(List<Cat> cats) {
         return cats.stream()
                 .sorted(comparingInt(Cat::getHealthLevel))
                 .toList();
     }
+
     public static List<Cat> sortCatsByMoodLevel(List<Cat> cats) {
         return cats.stream()
                 .sorted(comparingInt(Cat::getMoodLevel))
                 .toList();
     }
+
     public static List<Cat> sortCatsBySatietyLevel(List<Cat> cats) {
         return cats.stream()
                 .sorted(comparingInt(Cat::getSatietyLevel))
@@ -72,7 +74,6 @@ public class Main {
         cat.setSatietyLevel(new Random().nextInt(20, 81));
         cat.setMoodLevel(new Random().nextInt(20, 81));
         cat.setHealthLevel(new Random().nextInt(20, 81));
-//        cat.setAverage((cat.getSatietyLevel() + cat.getMoodLevel() + cat.getHealthLevel()) / 3);
         cat.refreshAverage();
         cat.setActionToday(false);
         cats.add(cat);
@@ -141,7 +142,7 @@ public class Main {
                 2  - Play with cat
                 3  - Cure the cat
                 4  - Get new cat
-                5  - Next day
+                5  - Next day (changes parameters and refreshes actions for cats)
                 6  - Choose sort
                 7  - Exit
                 """);
@@ -149,14 +150,15 @@ public class Main {
 
     public static int checkAction(String str) throws Exception {
         int input = Integer.parseInt(str);
-        if (input < 1 || input > 6)
+        if (input < 1 || input > 7)
             throw new Exception("Incorrect action");
         return input;
     }
 
     public static void getAction(List<Cat> cats) {
         while (true) {
-            fs.writeFile(cats);
+            checkIsCatDead(cats);
+            fs.writeFile(cats);  //write json file
             switch (chooseAction()) {
                 case 1:
                     chooseCat(cats).feed();
@@ -215,10 +217,21 @@ public class Main {
         return input;
     }
 
-    public static List<Cat> getNextDay(List<Cat> cats) {
+    public static void getNextDay(List<Cat> cats) {
         cats.forEach(Cat::changeParams);
         cats.forEach(Cat::resetActionToday);
-        return cats;
+    }
+
+    private static void checkIsCatDead(List<Cat> cats) {
+        var dead = cats.stream()
+                .filter(e -> e.getHealthLevel() <= 0)
+                .toList();
+        if (dead.size() != 0) {
+            for (int i = 0; i < dead.size(); i++) {
+                cats.remove(dead.get(i));
+                System.out.printf("%n%s is dead%n", dead.get(i).getName());
+            };
+        }
     }
 
     public static int chooseSort() {
@@ -257,30 +270,30 @@ public class Main {
     public static void getSort(List<Cat> cats) {
         while (true) {
             switch (chooseSort()) {
-                case 1:
+                case 1 -> {
                     sortCatsByName(cats);
                     printCats(sortCatsByName(cats));
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     sortCatsByAge(cats);
                     printCats(sortCatsByAge(cats));
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     sortCatsByHealthLevel(cats);
                     printCats(sortCatsByHealthLevel(cats));
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     sortCatsByMoodLevel(cats);
                     printCats(sortCatsByMoodLevel(cats));
-                    break;
-                case 5:
+                }
+                case 5 -> {
                     sortCatsBySatietyLevel(cats);
                     printCats(sortCatsBySatietyLevel(cats));
-                    break;
-                case 6:
+                }
+                case 6 -> {
                     sortCatsByAverageLevel(cats);
                     printCats(sortCatsByAverageLevel(cats));
-                    break;
+                }
             }
         }
     }

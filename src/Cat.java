@@ -38,17 +38,17 @@ public class Cat implements Feedable, Playable, Curable {
     }
 
     public void setSatietyLevel(int satietyLevel) {
-        if (satietyLevel < 0) this.satietyLevel = 0;
+        if (getSatietyLevel() <= 0) this.satietyLevel = 0;
         else this.satietyLevel = Math.min(satietyLevel, 100);
     }
 
     public void setMoodLevel(int moodLevel) {
-        if (moodLevel < 0) this.moodLevel = 0;
+        if (getMoodLevel() <= 0) this.moodLevel = 0;
         else this.moodLevel = Math.min(moodLevel, 100);
     }
 
     public void setHealthLevel(int healthLevel) {
-        if (healthLevel < 0) this.healthLevel = 0;
+        if (getHealthLevel() <= 0) this.healthLevel = 0;
         else this.healthLevel = Math.min(healthLevel, 100);
     }
 
@@ -116,16 +116,23 @@ public class Cat implements Feedable, Playable, Curable {
     @Override
     public void feed() {
         if (!isActionToday()) {
-            System.out.printf("%nYou fed the cat %s, %s years old%n%n", getName(), getAge());
-            if (getAge() < 6) {
-                satietyLevel += 7;
-                moodLevel += 7;
-            } else if (getAge() >= 6 && getAge() <= 10) {
-                satietyLevel += 5;
-                moodLevel += 5;
-            } else if (getAge() > 10) {
-                satietyLevel += 4;
-                moodLevel += 4;
+            int poisonChance = r.nextInt(1, 4);
+            if (poisonChance != 1) {
+                System.out.printf("%nYou fed the cat %s, %s years old%n%n", getName(), getAge());
+                if (getAge() < 6) {
+                    satietyLevel += 7;
+                    moodLevel += 7;
+                } else if (getAge() >= 6 && getAge() <= 10) {
+                    satietyLevel += 5;
+                    moodLevel += 5;
+                } else if (getAge() > 10) {
+                    satietyLevel += 4;
+                    moodLevel += 4;
+                }
+            } else {
+                System.out.printf("%nYou poisoned the cat %s. Mood and health levels decreased by 10.%n%n", getName());
+                moodLevel -= 10;
+                healthLevel -= 10;
             }
             setActionToday(true);
             refreshAverage();
@@ -159,19 +166,26 @@ public class Cat implements Feedable, Playable, Curable {
     @Override
     public void play() {
         if (!isActionToday()) {
-            System.out.printf("%nYou played with the cat %s, %s years old%n%n", getName(), getAge());
-            if (getAge() < 6) {
-                moodLevel += 7;
-                healthLevel += 7;
-                satietyLevel -= 3;
-            } else if (getAge() >= 6 && getAge() <= 10) {
-                moodLevel += 5;
-                healthLevel += 5;
-                satietyLevel -= 5;
-            } else if (getAge() > 10) {
-                moodLevel += 5;
-                healthLevel += 4;
-                satietyLevel -= 6;
+            int injuryChance = r.nextInt(1, 5);
+            if (injuryChance != 1) {
+                System.out.printf("%nYou played with the cat %s, %s years old%n%n", getName(), getAge());
+                if (getAge() < 6) {
+                    moodLevel += 7;
+                    healthLevel += 7;
+                    satietyLevel -= 3;
+                } else if (getAge() >= 6 && getAge() <= 10) {
+                    moodLevel += 5;
+                    healthLevel += 5;
+                    satietyLevel -= 5;
+                } else if (getAge() > 10) {
+                    moodLevel += 5;
+                    healthLevel += 4;
+                    satietyLevel -= 6;
+                }
+            } else {
+                System.out.printf("%n%s was injured. Mood and health levels decreased by 10.%n%n", getName());
+                moodLevel -= 10;
+                healthLevel -= 10;
             }
             setActionToday(true);
             refreshAverage();
