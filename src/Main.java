@@ -1,12 +1,16 @@
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import static java.util.stream.Collectors.*;
+import static java.util.Comparator.*;
 
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.reverseOrder;
+import static java.util.stream.Collectors.toList;
 
 public class Main {
     static FileService fs = new FileService("./cats.json");
+
     public static void main(String[] args) {
         run();
     }
@@ -28,6 +32,33 @@ public class Main {
                     cats.get(i).getMoodLevel(), cats.get(i).getSatietyLevel(), cats.get(i).getAverage());
         }
         System.out.println("+-----+-----------+---------+----------+------------+---------+---------------+\n");
+    }
+
+    public static List<Cat> sortCatsByName(List<Cat> cats) {
+        return cats.stream()
+                .sorted(comparing(Cat::getName))
+                .toList();
+    }
+
+    public static List<Cat> sortCatsByAge(List<Cat> cats) {
+        return cats.stream()
+                .sorted(comparingInt(Cat::getAge))
+                .toList();
+    }
+    public static List<Cat> sortCatsByHealthLevel(List<Cat> cats) {
+        return cats.stream()
+                .sorted(comparingInt(Cat::getHealthLevel))
+                .toList();
+    }
+    public static List<Cat> sortCatsByMoodLevel(List<Cat> cats) {
+        return cats.stream()
+                .sorted(comparingInt(Cat::getMoodLevel))
+                .toList();
+    }
+    public static List<Cat> sortCatsBySatietyLevel(List<Cat> cats) {
+        return cats.stream()
+                .sorted(comparingInt(Cat::getSatietyLevel))
+                .toList();
     }
 
     public static List<Cat> sortCatsByAverageLevel(List<Cat> cats) {
@@ -111,13 +142,14 @@ public class Main {
                 3  - Cure the cat
                 4  - Get new cat
                 5  - Next day
-                6  - Exit
+                6  - Choose sort
+                7  - Exit
                 """);
     }
 
     public static int checkAction(String str) throws Exception {
         int input = Integer.parseInt(str);
-        if (input < 0 || input > 6)
+        if (input < 1 || input > 6)
             throw new Exception("Incorrect action");
         return input;
     }
@@ -147,6 +179,8 @@ public class Main {
                     printCats(sortCatsByAverageLevel(cats));
                     break;
                 case 6:
+                    getSort(cats);
+                case 7:
                     return;
             }
         }
@@ -187,4 +221,67 @@ public class Main {
         return cats;
     }
 
+    public static int chooseSort() {
+        String input;
+        printSorts();
+        while (true) {
+            System.out.print("Enter number of sort(1..6): ");
+            try {
+                input = new Scanner(System.in).nextLine();
+                return checkSort(input);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private static void printSorts() {
+        System.out.println("""
+                Choose sort:
+                1  - by name
+                2  - by age
+                3  - by health
+                4  - by mood
+                5  - by satiety
+                6  - by average
+                """);
+    }
+
+    public static int checkSort(String str) throws Exception {
+        int input = Integer.parseInt(str);
+        if (input < 1 || input > 6)
+            throw new Exception("Incorrect number of sort");
+        return input;
+    }
+
+    public static void getSort(List<Cat> cats) {
+        while (true) {
+            switch (chooseSort()) {
+                case 1:
+                    sortCatsByName(cats);
+                    printCats(sortCatsByName(cats));
+                    break;
+                case 2:
+                    sortCatsByAge(cats);
+                    printCats(sortCatsByAge(cats));
+                    break;
+                case 3:
+                    sortCatsByHealthLevel(cats);
+                    printCats(sortCatsByHealthLevel(cats));
+                    break;
+                case 4:
+                    sortCatsByMoodLevel(cats);
+                    printCats(sortCatsByMoodLevel(cats));
+                    break;
+                case 5:
+                    sortCatsBySatietyLevel(cats);
+                    printCats(sortCatsBySatietyLevel(cats));
+                    break;
+                case 6:
+                    sortCatsByAverageLevel(cats);
+                    printCats(sortCatsByAverageLevel(cats));
+                    break;
+            }
+        }
+    }
 }
